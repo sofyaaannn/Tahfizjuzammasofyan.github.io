@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riwayat Setoran Santri - Tahfidz Juz Amma</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo"><i class="fas fa-quran"></i> Tahfidz Juz Amma</div>
+            <div class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="setoran.html">Setor Hafalan</a></li>
+                <li><a href="tajwid.html">Tajwid</a></li>
+                <li><a href="riwayat.html" class="active">Riwayat</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="riwayat">
+        <div class="container">
+            <div class="section-title">
+                <h2>Riwayat Penyetoran Santri</h2>
+                <p>Jejak hafalan yang telah disetorkan. Terus semangat menambah hafalan!</p>
+            </div>
+
+            <div class="history-table-container">
+                <table class="history-table" id="historyTable">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Tanggal & Waktu</th>
+                            <th>Surah</th>
+                            <th>Status/Nilai</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be populated by JS -->
+                    </tbody>
+                </table>
+                <p id="emptyMsg" style="text-align: center; margin-top: 20px; color: #777;">Belum ada data setoran.</p>
+                <div style="text-align: center; margin-top: 30px;">
+                    <button onclick="clearHistory()" class="btn btn-outline"
+                        style="font-size: 0.9rem; padding: 8px 20px; color: red; border-color: red;">Hapus
+                        Riwayat</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Tahfidz Juz Amma Online.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.querySelector('.nav-links').classList.toggle('active'); }
+
+        const historyTableBody = document.querySelector('#historyTable tbody');
+        const emptyMsg = document.getElementById('emptyMsg');
+
+        function loadHistory() {
+            const historyData = JSON.parse(localStorage.getItem('setoranHistory')) || [];
+
+            historyTableBody.innerHTML = '';
+
+            if (historyData.length === 0) {
+                emptyMsg.style.display = 'block';
+            } else {
+                emptyMsg.style.display = 'none';
+                historyData.reverse().forEach((item, index) => {
+                    const row = document.createElement('tr');
+
+                    // Determine badge class
+                    let badgeClass = 'status-latihan';
+                    if (item.status.includes('Mumtaz')) badgeClass = 'status-mumtaz';
+                    else if (item.status.includes('Jayyid')) badgeClass = 'status-jayyid';
+
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${item.date}</td>
+                        <td style="font-weight:600;">${item.surah}</td>
+                        <td><span class="status-badge ${badgeClass}">${item.status} (${item.accuracy}%)</span></td>
+                        <td><button onclick="deleteItem(${historyData.length - 1 - index})" style="border:none; background:none; color:red; cursor:pointer;"><i class="fas fa-trash"></i></button></td>
+                    `;
+                    historyTableBody.appendChild(row);
+                });
+            }
+        }
+
+        function clearHistory() {
+            if (confirm('Yakin ingin menghapus semua riwayat?')) {
+                localStorage.removeItem('setoranHistory');
+                loadHistory();
+            }
+        }
+
+        function deleteItem(originalIndex) {
+            const historyData = JSON.parse(localStorage.getItem('setoranHistory')) || [];
+            historyData.splice(originalIndex, 1);
+            localStorage.setItem('setoranHistory', JSON.stringify(historyData));
+            loadHistory();
+        }
+
+        // Initialize
+        loadHistory();
+    </script>
+    <script src="animations.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar Tajwid Lengkap - Tahfidz Juz Amma</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo"><i class="fas fa-quran"></i> Tahfidz Juz Amma</div>
+            <div class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="setoran.html">Setor Hafalan</a></li>
+                <li><a href="tajwid.html" class="active">Tajwid</a></li>
+                <li><a href="riwayat.html">Riwayat</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="tajwid">
+        <div class="container">
+            <div class="section-title">
+                <h2>Belajar Tajwid Lengkap</h2>
+                <p>Panduan lengkap hukum bacaan Al-Qur'an beserta contohnya.</p>
+            </div>
+
+            <div class="tajwid-grid">
+
+                <!-- 1. Hukumm Nun Sukun & Tanwin -->
+                <div class="tajwid-card" style="grid-column: span 3; text-align: left;">
+                    <h3 class="tajwid-title"
+                        style="border-bottom: 2px solid var(--gold); padding-bottom:10px; margin-bottom:20px;">1. Hukum
+                        Nun Sukun (نْ) & Tanwin (ـً ـٍ ـٌ)</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+
+                        <div>
+                            <h4 style="color:var(--primary)">Izhar Halqi (Jelas)</h4>
+                            <p class="tajwid-desc">Dibaca jelas tanpa dengung apabila bertemu huruf: ء هـ ع ح غ خ</p>
+                            <div class="example-box">
+                                <p class="arabic">مَنْ ءَامَنَ</p>
+                                <small>Man Aamana (Jelas 'n' nya)</small>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 style="color:var(--primary)">Idgham Bighunnah (Dengung)</h4>
+                            <p class="tajwid-desc">Melebur dengan dengung apabila bertemu: ي ن م و</p>
+                            <div class="example-box">
+                                <p class="arabic">مَن يَقُولُ</p>
+                                <small>May-yaquulu</small>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 style="color:var(--primary)">Idgham Bilaghunnah</h4>
+                            <p class="tajwid-desc">Melebur TANPA dengung apabila bertemu: ل ر</p>
+                            <div class="example-box">
+                                <p class="arabic">مِن رَّبِّهِمْ</p>
+                                <small>Mir-rabbihim</small>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 style="color:var(--primary)">Iqlab (Ganti Mim)</h4>
+                            <p class="tajwid-desc">Mengganti bunyi Nun menjadi Mim apabila bertemu: ب</p>
+                            <div class="example-box">
+                                <p class="arabic">مِن بَعْدِ</p>
+                                <small>Mim-ba'di</small>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 style="color:var(--primary)">Ikhfa Haqiqi (Samar)</h4>
+                            <p class="tajwid-desc">Dibaca samar-samar dengan dengung apabila bertemu 15 huruf sisa (ت ث
+                                ج د ...)</p>
+                            <div class="example-box">
+                                <p class="arabic">مِن شَرِّ</p>
+                                <small>Ming-syarri</small>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- 2. Hukum Mim Sukun -->
+                <div class="tajwid-card" style="grid-column: span 3; text-align: left;">
+                    <h3 class="tajwid-title"
+                        style="border-bottom: 2px solid var(--gold); padding-bottom:10px; margin-bottom:20px;">2. Hukum
+                        Mim Sukun (مْ)</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+
+                        <div>
+                            <h4 style="color:var(--primary)">Ikhfa Syafawi</h4>
+                            <p class="tajwid-desc">Samar di bibir dengan dengung, bertemu: ب</p>
+                            <div class="example-box">
+                                <p class="arabic">تَرْمِيهِم بِحِجَارَةٍ</p>
+                                <small>Tarmiihim-bihi jaaroh</small>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 style="color:var(--primary)">Idgham Mimi</h4>
+                            <p class="tajwid-desc">Mim sukun bertemu Mim (م). Dibaca lebur berdengung.</p>
+                            <div class="example-box">
+                                <p class="arabic">لَهُم مَّا</p>
+                                <small>Lahum-maa</small>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 style="color:var(--primary)">Izhar Syafawi</h4>
+                            <p class="tajwid-desc">Jelas di bibir, bertemu selain Mim (م) dan Ba (ب).</p>
+                            <div class="example-box">
+                                <p class="arabic">هُمْ نَآئِمُونَ</p>
+                                <small>Hum-naaa'imuun</small>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- 3. Qalqalah & Ghunnah -->
+                <div class="tajwid-card">
+
+                    <h3 class="tajwid-title">3. Qalqalah (Pantulan)</h3>
+                    <p class="tajwid-desc">Huruf: ق ط ب ج د</p>
+                    <div class="example-box">
+                        <strong style="display:block; margin-bottom:5px;">Sughra (Tengah):</strong>
+                        <p class="arabic">يَقْطَعُونَ</p>
+                        <strong style="display:block; margin-top:10px; margin-bottom:5px;">Kubra (Akhir/Waqaf):</strong>
+                        <p class="arabic">ٱلْفَلَقِ</p>
+                        <small>Al-Falaq (Pantulan kuat)</small>
+                    </div>
+                </div>
+
+                <div class="tajwid-card">
+
+                    <h3 class="tajwid-title">4. Ghunnah (Dengung)</h3>
+                    <p class="tajwid-desc">Nun atau Mim bertasydid (نّ / مّ). Ditahan 2 harakat.</p>
+                    <div class="example-box">
+                        <p class="arabic">إِنَّ - ثُمَّ</p>
+                        <small>In-na - Tsum-ma</small>
+                    </div>
+                </div>
+
+                <!-- 5. Mad -->
+                <div class="tajwid-card" style="grid-column: span 2;">
+
+                    <h3 class="tajwid-title">5. Hukum Mad (Panjang)</h3>
+                    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                        <div style="flex:1;">
+                            <h4>Mad Thabi'i (Asli)</h4>
+                            <p>Panjang 2 harakat biasa.</p>
+                            <div class="example-box">
+                                <p class="arabic">قَالَ - يَقُولُ</p>
+                            </div>
+                        </div>
+                        <div style="flex:1;">
+                            <h4>Wajib Muttasil</h4>
+                            <p>Mad bertemu Hamzah satukata. (4-5 harakat).</p>
+                            <div class="example-box">
+                                <p class="arabic">جَآءَ</p>
+                            </div>
+                        </div>
+                        <div style="flex:1;">
+                            <h4>Jaiz Munfasil</h4>
+                            <p>Mad bertemu Hamzah beda kata. (4-5 harakat).</p>
+                            <div class="example-box">
+                                <p class="arabic">إِنَّآ أَنزَلْنَٰهُ</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Tahfidz Juz Amma Online.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.querySelector('.nav-links').classList.toggle('active'); }
+    </script>
+    <script src="animations.js"></script>
+</body>
+
+</html>

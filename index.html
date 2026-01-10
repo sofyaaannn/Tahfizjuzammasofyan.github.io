@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tahfidz Juz Amma Online</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <header id="header">
+        <nav>
+            <div class="logo">
+                <i class="fas fa-quran"></i> Tahfidz Juz Amma
+            </div>
+            <div class="hamburger" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="setoran.html">Setor Hafalan</a></li>
+                <li><a href="tajwid.html">Tajwid</a></li>
+                <li><a href="riwayat.html">Riwayat</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home">
+        <div class="container hero-content">
+            <div class="hero-text">
+                <h1>Setor Hafalan Juz Amma <br>Kapan Saja & Di Mana Saja</h1>
+                <p>Platform belajar Al-Qur'an modern dengan bantuan teknologi untuk menemani perjalanan menghafalmu.</p>
+                <div class="hero-buttons">
+                    <a href="setoran.html" class="btn">Mulai Setoran</a>
+                    <a href="tajwid.html" class="btn btn-outline">Belajar Tajwid</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <i class="fas fa-book-quran quran-illustration"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3 Pilihan Menu -->
+    <section id="menu">
+        <div class="container">
+            <div class="section-title">
+                <h2>Fitur Utama</h2>
+                <p>Pilih layanan belajar yang kamu butuhkan</p>
+            </div>
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <div class="menu-icon"><i class="fas fa-microphone"></i></div>
+                    <h3>Setor Hafalan</h3>
+                    <p style="margin:15px 0; color:var(--text-light)">Simulasi setoran dengan AI koreksi otomatis</p>
+                    <a href="setoran.html" class="btn">Buka Setoran</a>
+                </div>
+                <div class="menu-card">
+                    <div class="menu-icon"><i class="fas fa-book-open"></i></div>
+                    <h3>Belajar Tajwid</h3>
+                    <p style="margin:15px 0; color:var(--text-light)">Pelajari hukum bacaan agar tilawah sempurna</p>
+                    <a href="tajwid.html" class="btn btn-outline">Buka Tajwid</a>
+                </div>
+                <div class="menu-card">
+                    <div class="menu-icon"><i class="fas fa-history"></i></div>
+                    <h3>Riwayat Setoran</h3>
+                    <p style="margin:15px 0; color:var(--text-light)">Lihat kembali catatan capaian hafalanmu</p>
+                    <a href="riwayat.html" class="btn btn-outline">Buka Riwayat</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quotes Qurani -->
+    <section class="quotes-section">
+        <div class="container quote-container">
+            <i class="fas fa-quote-left" style="font-size: 2rem; color:var(--gold); margin-bottom:20px;"></i>
+            <p class="quote-text">"Sebaik-baik kalian adalah orang yang belajar Al-Qur'an dan mengajarkannya."</p>
+            <p class="quote-source">- HR. Bukhari</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Tahfidz Juz Amma Online.</p>
+            <div style="margin-top:10px; font-size: 1.5rem;">
+                <i class="fab fa-instagram" style="margin:0 10px; cursor:pointer;"></i>
+                <i class="fab fa-facebook" style="margin:0 10px; cursor:pointer;"></i>
+                <i class="fab fa-youtube" style="margin:0 10px; cursor:pointer;"></i>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        }
+    </script>
+    <script src="animations.js"></script>
+</body>
+
+</html>

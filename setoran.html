@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setoran Hafalan AI - Tahfidz Juz Amma</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo"><i class="fas fa-quran"></i> Tahfidz Juz Amma</div>
+            <div class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="setoran.html" class="active">Setor Hafalan</a></li>
+                <li><a href="tajwid.html">Tajwid</a></li>
+                <li><a href="riwayat.html">Riwayat</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="setoran">
+        <div class="container">
+            <div class="section-title">
+                <h2>Setor Hafalan AI</h2>
+                <p>Simulasikan setoran hafalanmu dengan Ustadz Virtual (Juz 30). Pilih surah, baca dengan tartil, dan
+                    dapatkan koreksi otomatis.</p>
+            </div>
+
+            <div class="ai-container">
+                <div class="robot-ustadz" id="robotAvatar">
+                    <img src="ustadz-avatar.jpg" alt="Ustadz Virtual"
+                        style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                    <div class="robot-status" id="robotStatus"></div>
+                </div>
+
+                <h3>Ustadz Virtual</h3>
+                <p id="robotMessage" style="min-height: 1.6em;">Silakan pilih surah terlebih dahulu.</p>
+
+                <!-- Surah Selector -->
+                <div style="margin: 20px 0; width: 100%; max-width: 400px;">
+                    <select id="targetSurah" class="form-group"
+                        style="width: 100%; padding: 10px; border-radius: 10px; border: 2px solid #ddd; font-size: 1rem;">
+                        <option value="" disabled selected>-- Pilih Surah Juz 30 --</option>
+                    </select>
+                </div>
+
+                <div class="transcript-box" id="transcriptOutput" style="flex-direction: column; gap: 10px;">
+                    <span style="font-size: 0.9em; color: #aaa;">Teks Bacaan Terdeteksi:</span>
+                    <p id="detectedText" class="arabic" style="width: 100%; text-align: center;">...</p>
+                </div>
+
+                <div id="correctionArea"
+                    style="display: none; width: 100%; background: #fff5f5; border: 1px solid #ffcccc; border-radius: 15px; padding: 20px; margin-bottom: 20px; text-align: right;">
+                    <h4 style="text-align: center; color: #c0392b; margin-bottom: 15px;">Hasil Koreksi</h4>
+                    <div style="margin-bottom: 15px;">
+                        <p style="font-size: 0.9rem; color: #666; text-align: center;">Ayat Seharusnya:</p>
+                        <p id="referenceText" class="arabic"
+                            style="color: var(--success); margin-top: 5px; text-align: center;"></p>
+                    </div>
+                    <div style="border-top: 1px dashed #ccc; padding-top: 15px;">
+                        <p style="font-size: 0.9rem; color: #666; text-align: center;">Status:</p>
+                        <p id="correctionFeedback" style="text-align: center; font-weight: bold; margin-top: 5px;"></p>
+                    </div>
+                </div>
+
+                <div class="feedback-msg" id="feedbackMsg"></div>
+
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <button class="btn" id="recordBtn" onclick="toggleRecording()">
+                        <i class="fas fa-microphone"></i> Mulai Setoran
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Tahfidz Juz Amma Online.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.querySelector('.nav-links').classList.toggle('active'); }
+
+        // --- Speech Logic ---
+        let recognition, isRecording = false, finalTranscript = "", currentReferenceText = "";
+        const transcriptOutput = document.getElementById('detectedText');
+        const robotMessage = document.getElementById('robotMessage');
+        const robotStatus = document.getElementById('robotStatus');
+        const recordBtn = document.getElementById('recordBtn');
+        const targetSurahSelect = document.getElementById('targetSurah');
+        const correctionArea = document.getElementById('correctionArea');
+        const referenceTextEl = document.getElementById('referenceText');
+        const correctionFeedback = document.getElementById('correctionFeedback');
+
+        const juz30List = [
+            "An-Naba", "An-Nazi'at", "'Abasa", "At-Takwir", "Al-Infitar",
+            "Al-Mutaffifin", "Al-Inshiqaq", "Al-Buruj", "At-Tariq", "Al-A'la",
+            "Al-Ghashiyah", "Al-Fajr", "Al-Balad", "Ash-Shams", "Al-Layl",
+            "Ad-Duha", "Ash-Sharh", "At-Tin", "Al-'Alaq", "Al-Qadr",
+            "Al-Bayyinah", "Az-Zalzalah", "Al-'Adiyat", "Al-Qari'ah", "At-Takathur",
+            "Al-'Asr", "Al-Humazah", "Al-Fil", "Quraysh", "Al-Ma'un",
+            "Al-Kawthar", "Al-Kafirun", "An-Nasr", "Al-Masad", "Al-Ikhlas",
+            "Al-Falaq", "An-Nas"
+        ];
+
+        juz30List.forEach((name, index) => {
+            const surahNum = 78 + index;
+            const option = document.createElement('option');
+            option.value = surahNum;
+            option.textContent = `${surahNum}. ${name}`;
+            targetSurahSelect.appendChild(option);
+        });
+
+        targetSurahSelect.addEventListener('change', async function () {
+            const num = this.value;
+            robotMessage.innerText = "⏳ Memuat teks ayat...";
+            correctionArea.style.display = 'none';
+            try {
+                const response = await fetch(`https://api.alquran.cloud/v1/surah/${num}/ar.alafasy`);
+                const data = await response.json();
+                if (data.status === "OK") {
+                    currentReferenceText = data.data.ayahs.map(a => a.text).join(" ");
+                    robotMessage.innerText = `Surah ${juz30List[num - 78]} siap. Silakan mulai baca.`;
+                }
+            } catch (err) { robotMessage.innerText = "Gagal memuat teks."; }
+        });
+
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechAPI();
+            recognition.lang = 'ar-SA';
+            recognition.continuous = true;
+            recognition.interimResults = true;
+
+            recognition.onstart = function () {
+                isRecording = true;
+                finalTranscript = "";
+                robotMessage.innerText = "Mendengarkan... (Klik Selesai jika sudah)";
+                robotStatus.parentElement.classList.add('recording');
+                recordBtn.innerHTML = '<i class="fas fa-stop"></i> Selesai';
+                recordBtn.style.background = '#e74c3c';
+                transcriptOutput.innerHTML = "<span style='color:#ccc'>...</span>";
+                correctionArea.style.display = 'none';
+            };
+
+            recognition.onresult = function (event) {
+                let interim = '';
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    if (event.results[i].isFinal) finalTranscript += event.results[i][0].transcript + " ";
+                    else interim += event.results[i][0].transcript;
+                }
+                transcriptOutput.innerText = (finalTranscript + interim) || "...";
+            };
+
+            recognition.onend = function () {
+                if (isRecording) { stopRecordingStates(); analyzeRecitation(); }
+            };
+        } else {
+            recordBtn.disabled = true;
+            transcriptOutput.innerText = "Browser tidak mendukung Voice API.";
+        }
+
+        function toggleRecording() {
+            if (!targetSurahSelect.value) return alert("Pilih surah dulu!");
+            if (!currentReferenceText) return alert("Teks belum siap!");
+            if (isRecording) { isRecording = false; recognition.stop(); stopRecordingStates(); analyzeRecitation(); }
+            else recognition.start();
+        }
+
+        function stopRecordingStates() {
+            robotStatus.parentElement.classList.remove('recording');
+            recordBtn.innerHTML = '<i class="fas fa-microphone"></i> Mulai Setoran';
+            recordBtn.style.background = '';
+        }
+
+        function analyzeRecitation() {
+            if (!transcriptOutput.innerText || transcriptOutput.innerText == "...") return;
+            robotMessage.innerText = "Menganalisis bacaan lebih teliti...";
+
+            setTimeout(() => {
+                correctionArea.style.display = 'block';
+
+                // 1. Normalize Texts
+                const normRef = normalizeArabic(currentReferenceText);
+                const normUser = normalizeArabic(transcriptOutput.innerText);
+
+                // 2. Calculate Similarity (Levenshtein)
+                const similarity = calculateSimilarity(normRef, normUser);
+                const acc = Math.round(similarity * 100);
+
+                // 3. Determine Feedback
+                let statusText = "";
+                let feedbackHTML = "";
+                let msgColor = "";
+
+                if (acc >= 90) {
+                    statusText = "Mumtaz (Sempurna)";
+                    msgColor = "green";
+                    robotMessage.innerText = "MasyaAllah, Mumtaz! Bacaan sangat lancar.";
+                    feedbackHTML = `<span style='color:${msgColor}; font-weight:bold;'>Mumtaz! (${acc}%)</span><br>Hampir tidak ada kesalahan. Barakallahu fiik.`;
+                } else if (acc >= 75) {
+                    statusText = "Jayyid Jiddan";
+                    msgColor = "#2ecc71"; // Light green
+                    robotMessage.innerText = "Bagus! Tinggal sedikit penyempurnaan.";
+                    feedbackHTML = `<span style='color:${msgColor}; font-weight:bold;'>Jayyid Jiddan (${acc}%)</span><br>Bacaan sudah mengalir, perbaiki sedikit makhraj.`;
+                } else if (acc >= 50) {
+                    statusText = "Jayyid";
+                    msgColor = "orange";
+                    robotMessage.innerText = "Sudah lumayan, tapi perlu diulang.";
+                    feedbackHTML = `<span style='color:${msgColor}; font-weight:bold;'>Cukup Baik (${acc}%)</span><br>Masih ada ayat yang terlewat atau kurang jelas.`;
+                } else {
+                    statusText = "Perlu Latihan";
+                    msgColor = "red";
+                    robotMessage.innerText = "Afwan, suara kurang terdeteksi dengan baik.";
+                    feedbackHTML = `<span style='color:${msgColor}; font-weight:bold;'>Perlu Banyak Latihan (${acc}%)</span><br>Pastikan membaca dengan jelas dan tartil.`;
+                }
+
+                // Show Reference with highlight (Simple trunc for now)
+                referenceTextEl.innerText = currentReferenceText.substring(0, 300) + (currentReferenceText.length > 300 ? "..." : "");
+                correctionFeedback.innerHTML = feedbackHTML;
+
+                // SAVE TO HISTORY
+                saveHistory(targetSurahSelect.options[targetSurahSelect.selectedIndex].text, statusText, acc);
+
+            }, 1000);
+        }
+
+        function saveHistory(surahName, status, accuracy) {
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('id-ID') + ' ' + now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+
+            const newRecord = {
+                date: dateStr,
+                surah: surahName,
+                status: status,
+                accuracy: accuracy
+            };
+
+            const history = JSON.parse(localStorage.getItem('setoranHistory')) || [];
+            history.push(newRecord);
+            localStorage.setItem('setoranHistory', JSON.stringify(history));
+        }
+
+        // --- Helper Functions for Accuracy ---
+
+        function normalizeArabic(text) {
+            if (!text) return "";
+            return text
+                // Remove Tashkeel (Harakat)
+                .replace(/[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06DC\u06DF-\u06E8\u06EA-\u06ED]/g, '')
+                // Normalize Alif
+                .replace(/[أإآ]/g, 'ا')
+                // Normalize Taa Marbuta to Ha (often sounded as Ha in stop) or Ta (in context)
+                // For simplified checking, mapping to Ha is safer for STT
+                .replace(/ة/g, 'ه')
+                // Normalize Ya / Alif Maqsura
+                .replace(/ى/g, 'ي')
+                // Remove non-arabic chars (except spaces)
+                .replace(/[^\u0600-\u06FF\s]/g, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function calculateSimilarity(s1, s2) {
+            let longer = s1;
+            let shorter = s2;
+            if (s1.length < s2.length) {
+                longer = s2;
+                shorter = s1;
+            }
+            const longerLength = longer.length;
+            if (longerLength == 0) return 1.0;
+            return (longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
+        }
+
+        function editDistance(s1, s2) {
+            s1 = s1.toLowerCase();
+            s2 = s2.toLowerCase();
+            const costs = new Array();
+            for (let i = 0; i <= s1.length; i++) {
+                let lastValue = i;
+                for (let j = 0; j <= s2.length; j++) {
+                    if (i == 0) costs[j] = j;
+                    else {
+                        if (j > 0) {
+                            let newValue = costs[j - 1];
+                            if (s1.charAt(i - 1) != s2.charAt(j - 1))
+                                newValue = Math.min(Math.min(newValue, lastValue), costs[j - 1]) + 1;
+                            costs[j - 1] = lastValue;
+                            lastValue = newValue;
+                        }
+                    }
+                }
+                if (i > 0) costs[s2.length] = lastValue;
+            }
+            return costs[s2.length];
+        }
+    </script>
+    <script src="animations.js"></script>
+</body>
+
+</html>
