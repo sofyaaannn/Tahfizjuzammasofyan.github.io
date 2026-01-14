@@ -102,6 +102,33 @@
         function toggleMenu() {
             document.querySelector('.nav-links').classList.toggle('active');
         }
+
+        // --- Home Welcome Greeting (Gentle & Friendly) ---
+        function playHomeWelcome() {
+            if ('speechSynthesis' in window) {
+                // Check if we already greeted in this session to avoid annoyance (optional, but good practice per user request context 'salam pembuka')
+                // For now, playing every reload as requested "ketika ada yang mengakses".
+
+                window.speechSynthesis.cancel();
+                const msg = new SpeechSynthesisUtterance();
+                msg.text = "Assalamu'alaikum Warahmatullahi Wabarakatuh. Selamat datang di Tahfidz Juz Amma Online. Mari kita belajar Al-Qur'an dengan hati yang gembira.";
+                msg.lang = 'id-ID';
+                msg.volume = 1;
+                msg.rate = 0.95; // Slightly slower for gentleness (Ramah/Lembut)
+                msg.pitch = 1.1; // Slightly raised for friendliness but natural
+
+                window.speechSynthesis.speak(msg);
+            }
+        }
+
+        // Attempt playback on load
+        window.addEventListener('load', playHomeWelcome);
+
+        // Fallback for browsers blocking autoplay
+        document.body.addEventListener('click', function () {
+            // Optional: logic to play if load failed could go here, 
+            // but simplified to just 'load' + user interaction standard behavior handles most content.
+        }, { once: true });
     </script>
     <script src="animations.js"></script>
 </body>

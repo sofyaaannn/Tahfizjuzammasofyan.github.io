@@ -194,6 +194,24 @@
 
     <script>
         function toggleMenu() { document.querySelector('.nav-links').classList.toggle('active'); }
+
+        // --- Tajwid Welcome Greeting (Gentle) ---
+        function playTajwidWelcome() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const msg = new SpeechSynthesisUtterance();
+                msg.text = "Assalamu'alaikum. Mari pelajari hukum tajwid agar bacaan Al-Qur'an kita semakin tartil dan benar.";
+                msg.lang = 'id-ID';
+                msg.volume = 1;
+                msg.rate = 0.95; // Gentle pace
+                msg.pitch = 1.1; // Friendly tone
+
+                window.speechSynthesis.speak(msg);
+            }
+        }
+
+        window.addEventListener('load', playTajwidWelcome);
+        document.body.addEventListener('click', () => { /* optional */ }, { once: true });
     </script>
     <script src="animations.js"></script>
 </body>

@@ -115,6 +115,23 @@
 
         // Initialize
         loadHistory();
+        // --- Riwayat Welcome Greeting (Gentle) ---
+        function playRiwayatWelcome() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const msg = new SpeechSynthesisUtterance();
+                msg.text = "Assalamu'alaikum. Ini adalah halaman riwayat setoran hafalanmu. Semoga catatan ini menjadi motivasi untuk terus menambah hafalan.";
+                msg.lang = 'id-ID';
+                msg.volume = 1;
+                msg.rate = 0.95; // Gentle pace
+                msg.pitch = 1.1; // Friendly tone
+
+                window.speechSynthesis.speak(msg);
+            }
+        }
+
+        window.addEventListener('load', playRiwayatWelcome);
+        document.body.addEventListener('click', () => { /* optional */ }, { once: true });
     </script>
     <script src="animations.js"></script>
 </body>

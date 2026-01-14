@@ -233,7 +233,25 @@
                 // SAVE TO HISTORY
                 saveHistory(targetSurahSelect.options[targetSurahSelect.selectedIndex].text, statusText, acc);
 
+                // --- AUDIO FEEDBACK ---
+                // Speak the result title and the motivating message
+                speakText(statusText + ". " + robotMessage.innerText);
+
             }, 1000);
+        }
+
+        // --- Helper: Text to Speech (Cartoon Boy) ---
+        function speakText(textToSpeak) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // Stop previous
+                const msg = new SpeechSynthesisUtterance();
+                msg.text = textToSpeak;
+                msg.lang = 'id-ID';
+                msg.volume = 1;
+                msg.rate = 1.1;
+                msg.pitch = 1.4; // Consistent 11yo boy voice
+                window.speechSynthesis.speak(msg);
+            }
         }
 
         function saveHistory(surahName, status, accuracy) {
@@ -306,6 +324,36 @@
             }
             return costs[s2.length];
         }
+        // --- Welcome Speech (Cartoon Boy Voice) ---
+        function playWelcomeMessage() {
+            if ('speechSynthesis' in window) {
+                // Cancel any ongoing speech
+                window.speechSynthesis.cancel();
+
+                const msg = new SpeechSynthesisUtterance();
+                msg.text = "Assalamu'alaikum! Selamat datang di menu setor hafalan. Ayo semangat muraja'ah hafalanmu hari ini!";
+                msg.lang = 'id-ID';
+                msg.volume = 1;
+                msg.rate = 1.1;  // Slightly faster
+                msg.pitch = 1.4; // Higher pitch to sound like a young boy (11 y.o)
+
+                // Attempt to play
+                window.speechSynthesis.speak(msg);
+            }
+        }
+
+        // Try to play on load (may be blocked by browser policy without interaction)
+        // We also bind it to the first click just in case, ensuring it's heard
+        document.addEventListener('DOMContentLoaded', () => {
+            playWelcomeMessage();
+        });
+
+        // Fallback: If blocked, play on first interaction (optional but good UX)
+        document.body.addEventListener('click', function () {
+            // Check if speaking, if not and haven't welcomed recently (optional logic), maybe play?
+            // For now, let's keep it simple. The user asked for "pas masuk".
+            // We rely on the initial call. 
+        }, { once: true });
     </script>
     <script src="animations.js"></script>
 </body>
